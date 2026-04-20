@@ -20,13 +20,19 @@ export default function Receipt({ refId }: ReceiptProps) {
   useEffect(() => {
     if (refId) {
       const saved = localStorage.getItem('receipt_' + refId);
+      console.log('Receipt loading refId:', refId);
+      console.log('localStorage data:', saved);
       if (saved) {
         try {
-          setReceipt(JSON.parse(saved));
+          const parsed = JSON.parse(saved);
+          console.log('Parsed receipt:', parsed);
+          setReceipt(parsed);
         } catch (error) {
           console.error('Failed to parse receipt from localStorage:', error);
           setReceipt(null);
         }
+      } else {
+        console.log('No receipt found for:', refId);
       }
     }
   }, [refId]);

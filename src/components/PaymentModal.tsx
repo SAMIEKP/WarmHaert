@@ -12,15 +12,15 @@ interface PaymentModalProps {
 
 export default function PaymentModal({ total, isOpen, onClose, onPaymentSuccess }: PaymentModalProps) {
   const [step, setStep] = useState<'method' | 'visa' | 'airtel' | 'tnm'>('method');
-  const [method, setMethod] = useState<'visa' | 'airtel' | 'tnm' | null>(null);
-  const [formData, setFormData] = useState({
-    cardNumber: '',
-    expiry: '',
-    cvv: '',
-    name: '',
-    phone: '',
-    amount: formatMWK(total)
-  });
+  const [method, setMethod] = useState<'visa' | 'airtel' | 'tnm'>( 'visa');
+    const [formData, setFormData] = useState({
+      cardNumber: '',
+      expiry: '',
+      cvv: '',
+      name: '',
+      phone: '',
+      amount: total.toString()
+    });
 
   const generateReceipt = () => {
     const ref = `WH-PAY-${Date.now()}`;
@@ -31,6 +31,9 @@ export default function PaymentModal({ total, isOpen, onClose, onPaymentSuccess 
       details: formData,
       items: JSON.parse(localStorage.getItem('warmheart_malawi_cart') || '[]')
     };
+    console.log('📄 Receipt generated:', ref, receiptData);
+    console.log('📄 Cart items saved:', receiptData.items);
+    console.log('📄 localStorage receipt key:', 'receipt_' + ref);
     localStorage.setItem('receipt_' + ref, JSON.stringify(receiptData));
     return ref;
   };
